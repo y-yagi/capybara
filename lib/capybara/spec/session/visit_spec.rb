@@ -17,6 +17,17 @@ Capybara::SpecHelper.spec '#visit' do
     expect(@session).to have_content('Another World')
   end
 
+  # TODO: This test passes on racktest and selenium - although I think all it's really testing
+  # is that scheme defaults to http if not specified as anything else
+  # it "should fetch a response when absolute URI doesn't have a scheme", focus: true do
+  #   # Preparation
+  #   @session.visit('/')
+  #   root_uri = URI.parse(@session.current_url)
+  #
+  #   @session.visit("//#{root_uri.host}:#{root_uri.port}/foo")
+  #   expect(@session).to have_content('Another World')
+  # end
+
   it "should fetch a response when absolute URI doesn't have a trailing slash" do
     # Preparation
     @session.visit('/foo/bar')
@@ -78,6 +89,26 @@ Capybara::SpecHelper.spec '#visit' do
       expect(serverless_session).to have_content("Another World")
     end
   end
+
+  context "with Capybara.app_host set" do
+    it "should override server", requires: [:server] do
+      another_session = Capybara::Session.new(@session.mode, @session.app.dup)
+      Capybara.app_host = "http://#{@session.server.host}:#{@session.server.port}"
+      another_session.visit('/foo')
+      expect(another_session).to have_content("Another World")
+      expect(another_session.current_url).to start_with(Capybara.app_host)
+      expect(URI.parse(another_session.current_url).port).not_to eq another_session.server.port
+      expect(URI.parse(another_session.current_url).port).to eq @session.server.port
+    end
+
+    it "should append relative path", requires: [:server] do
+      #TODO: This was Capybara 2.x behavior - not sure it should continue in 3.x
+      Capybara.app_host = "http://#{@session.server.host}:#{@session.server.port}/redirect/0"
+      @session.visit('/times')
+      expect(@session).to have_content('redirection complete')
+    end
+  end
+
 
   it "should send no referer when visiting a page" do
     @session.visit '/get_referer'
