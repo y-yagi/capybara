@@ -131,7 +131,7 @@ Capybara::SpecHelper.spec Capybara::Window, requires: [:windows] do
   end
 
   describe '#maximize' do
-    it 'should be able to maximize window', requires: [:windows, :js], focus: true do
+    it 'should be able to maximize window', requires: [:windows, :js] do
       skip "This test fails when run with Firefox on Travis - see issue #1493 - skipping for now" if ENV['TRAVIS'] && @session.respond_to?(:mode) && (@session.mode == :selenium_focus)
 
       screen_width, screen_height = @session.evaluate_script("[window.screen.availWidth, window.screen.availHeight];")
@@ -143,7 +143,7 @@ Capybara::SpecHelper.spec Capybara::Window, requires: [:windows] do
       expect(@session.evaluate_script("[window.outerWidth, window.outerHeight];")).to eq([screen_width, screen_height])
     end
 
-    it 'should stay on current window if invoked not for current window', requires: [:windows, :js], focus: true do
+    it 'should stay on current window if invoked not for current window', requires: [:windows, :js] do
       skip "This test fails when run with Firefox on Travis - see issue #1493 - skipping for now" if ENV['TRAVIS'] && @session.respond_to?(:mode) && (@session.mode == :selenium_focus)
 
       @other_window = @session.window_opened_by do
