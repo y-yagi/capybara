@@ -23,7 +23,7 @@ Capybara::SpecHelper.spec '#click_button' do
     end
   end
 
-  context "with a form that has a relative url as an action" do
+  context "with a form that has a relative url as an action", focus: true do
     it "should post to the correct url" do
       @session.click_button('Relative Action')
       expect(extract_results(@session)['relative']).to eq('Relative Action')
@@ -31,7 +31,7 @@ Capybara::SpecHelper.spec '#click_button' do
     end
   end
 
-  context "with a form that has no action specified" do
+  context "with a form that has no action specified", focus: true do
     it "should post to the correct url" do
       @session.click_button('No Action')
       expect(extract_results(@session)['no_action']).to eq('No Action')
