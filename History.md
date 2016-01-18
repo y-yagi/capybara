@@ -5,7 +5,7 @@ Release date: unreleased
 Relase date: 2016-01-17
 
 ### Fixed
-* Fixed path escaping issue with current_path matchers [Tom Walpole, Luke Rollans] (Issue #1611)
+* Fixed path escaping issue with current_path matchers [Tom Walpole, Luke Rollans] ( #1611 )
 * Fixed circular require [David Rodríguez]
 * Capybara::RackTest::Form no longer overrides Object#method [David Rodriguez]
 * options and with_options filter for :select selector have more intuitive visibility behavior [Nathan]
